@@ -1,0 +1,75 @@
+<div class="col-md-10 col-md-offset-1">
+	<div class="row">
+		<form autocomplete="off" novalidate #formRef="ngForm">
+			<div class="col-md-5">
+				<input type="text" class="form-control" placeholder="What are you working on?" 
+				name="task_name" [(ngModel)]="text">
+			</div>
+			<div class="col-md-2">
+				<select class="form-control slct" id="project" name="project" required #val>
+					<option *ngFor="let project of project_names" [value]="project">{{project}}</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<input type="text" [ngStyle]="{'text-align': 'right'}" 
+				class="form-control timer_look" [placeholder]="ticks + ' ' + timeUnit">
+			</div>
+			<div class="col-md-3">
+				<button type="button" class="btn" [ngClass]="btnStatus ? 'btn-success':'hidden'" 
+				
+				(click)="startTimer(timer_outpoot)">{{btnValue}}</button>
+
+				<button type="button" class="btn" [ngClass]="btnStatus ? 'hidden':'btn-danger'"
+				(click)="stopTimer(val.value)"
+				(click)="calcSpentTime()"
+				>{{btnValue}}</button>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="col-md-10 col-md-offset-1">
+	<div class="row">
+		<div class="col-md-12">
+			{{now | date:'fullDate' | slice:0:3}}, {{now | date:'dd'}} {{now | date | slice:0:3 || now}}
+		</div>
+		<div class="col-md-12">
+			<div class="col-md-5">
+				<ul class="list-unstyled">
+					 <li *ngFor="let tasks of task;let i = index" 
+					 [class.of-off]="!isVisible" 
+					 [class.of-on]="isVisible" 
+					 [id] = "i"
+					 #list
+					 (mouseover)="is_Visible(i, list.id)"
+					 (mouseleave)="is_Hidden(list)">{{tasks.text}}</li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<ul class="list-unstyled">
+					<li class="selected_project" *ngFor="let sel of selected_project"><span class="project_color">{{sel.name}}</span></li>
+									
+				</ul>
+			</div>
+			<div class="col-md-1" *ngIf="task">
+				<ul class="list-unstyled">
+				<li class="selected_project" *ngFor="let tasks of task">
+					<i class="fa fa-play" aria-hidden="true" (click)="play()"></i></li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<ul class="list-unstyled">
+					<li  *ngFor="let sT of spentTime">
+						<span>{{sT.hours}}{{sT.minutes}}{{sT.seconds}}</span>
+					</li>
+				
+				</ul>
+			</div>
+			<div class="col-md-2">
+					<ul class="list-unstyled">
+					<li *ngFor="let tR of timeRange">
+						<span>{{tR.sRange}} - {{tR.eRange}}</span>
+					</li>
+					</ul>
+			</div>
+	</div>
+</div>
